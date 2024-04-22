@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  # ---- Dependencies ----
+
+  rabbit:
+    ports:
+      - '${RABBIT_PUBLIC_PORT}:5672'
+      - '${RABBIT_MANAGEMENT_PUBLIC_PORT}:15672'
+
+  postgres:
+    ports:
+      - '${DB_PUBLIC_PORT}:5432'
+
+  s3minio:
+    ports:
+      - "${MINIO_PUBLIC_PORT}:9000"
+      - "${MINIO_CONSOLE_PUBLIC_PORT}:9001"
+    volumes:
+      - ./storage/minio:/data
+
+  # ---- Microservices ----
+
+  gateway:
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./tour_gateway/:/app/
+      - ./tour_shared/:/shared/
+
+  processor:
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./tour_processor/:/app/
+      - ./tour_shared/:/shared/
