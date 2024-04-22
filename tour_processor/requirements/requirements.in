@@ -1,0 +1,12 @@
+nameko==3.0.0-rc11
+nameko-sqlalchemy~=1.5.0
+psycopg2==2.9.5
+alembic~=1.8.1
+marshmallow~=3.19.0
+tour_shared>=0.0.1
+opencv-python-headless~=4.1.0.25
+numpy~=1.24.1
+scipy~=1.2.1
+matplotlib~=3.0.3
+imutils~=0.5.2
+pandas~=0.24.2

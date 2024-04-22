@@ -1,0 +1,8 @@
+info:
+  description: The Tour API Reference
+  title: Tour
+  version: 1.0.0
+openapi: 3.0.2
+servers:
+  - url: https://tour.zino.studio/v1/
+paths:

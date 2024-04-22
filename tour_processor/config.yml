@@ -1,0 +1,46 @@
+AMQP_URI: amqp://${RABBIT_USER:guest}:${RABBIT_PASSWORD:guest}@${RABBIT_HOST:localhost}:${RABBIT_PORT:5672}/
+DB_URIS:
+  'processor:Base': postgresql+psycopg2://${DB_USER:postgres}:${DB_PASSWORD:password}@${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:processor}
+LOGGING:
+  version: 1
+  formatters:
+    full:
+      format: '%(levelname)s [%(asctime)s] [%(name)s.%(funcName)s] %(message)s'
+  handlers:
+    console_full:
+      class: logging.StreamHandler
+      formatter: full
+    console_simple:
+      class: logging.StreamHandler
+  loggers:
+    admin:
+      level: DEBUG
+      handlers: [console_full]
+      propagate: no
+    nameko:
+      level: WARNING
+      handlers: [console_full]
+      propagate: no
+    # This is temporary workaround to suppress logging of handled exceptions.
+    # When we have adapted `expected_exceptions` in nameko, we can easily set
+    # it to WARNING.
+    nameko.containers:
+      level: ERROR
+      handlers: [console_full]
+      propagate: no
+    nameko.web.server:
+      level: INFO
+      handlers: [console_simple]
+      propagate: no
+
+REDIS:
+  host: redis
+
+LANGUAGE:
+  supported: ["en", "fa"]
+  default: "en"
+  local_path: "locales"
+
+ELASTICSEARCH:
+  hosts:
+    - "elastic"

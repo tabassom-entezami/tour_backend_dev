@@ -1,0 +1,72 @@
+AMQP_URI: amqp://${RABBIT_USER:guest}:${RABBIT_PASSWORD:guest}@${RABBIT_HOST:localhost}:${RABBIT_PORT:5672}/
+max_workers: 50
+LOGGING:
+  version: 1
+  formatters:
+    full:
+      format: '%(levelname)s [%(asctime)s] [%(name)s.%(funcName)s] %(message)s'
+  handlers:
+    console_full:
+      class: logging.StreamHandler
+      formatter: full
+    console_simple:
+      class: logging.StreamHandler
+  loggers:
+    gateway:
+      level: DEBUG
+      handlers: [console_full]
+      propagate: no
+    nameko:
+      level: WARNING
+      handlers: [console_full]
+      propagate: no
+    # This is temporary workaround to suppress logging of handled exceptions.
+    # When we have adapted `expected_exceptions` in nameko, we can easily set
+    # it to WARNING.
+    nameko.containers:
+      level: ERROR
+      handlers: [console_full]
+      propagate: no
+    nameko.web.server:
+      level: INFO
+      handlers: [console_simple]
+      propagate: no
+
+CACHE:
+  BACKEND: "cache.backend.redismem.RedisCache"
+  LOCATION:
+    host: redis
+    port: 6379
+  OPTIONS:
+    db: 0
+
+THROTTlE:
+  DEFAULT_THROTTLE_RATES:
+    sms: '1/minute'
+    phone: '2/minute'
+    token: "50/minute"
+
+ALLOWED_DOMAINS:
+  - tour.zino.studio
+
+LANGUAGE:
+  supported: ["en", "fa"]
+  default: "en"
+  local_path: "locales"
+
+FRONT_CONSOLE_URL: ${FRONT_CONSOLE_URL}
+
+WITH_DUMMY_GATEWAY: True
+
+S3_ADDRESS_URL: ${S3_ADDRESS_URL}
+S3_PUBLIC_PORT: ${S3_PUBLIC_PORT}
+S3_PUBLIC_DOMAIN: ${S3_PUBLIC_DOMAIN}
+S3_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID}
+S3_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY}
+S3_PUBLIC_BUCKET_NAME: ${S3_PUBLIC_BUCKET_NAME}
+S3_PRIVATE_BUCKET_NAME: ${S3_PRIVATE_BUCKET_NAME}
+S3_PROVIDER: ${S3_PROVIDER}
+S3_PUBLIC_BUCKET_DOMAIN: ${S3_PUBLIC_BUCKET_DOMAIN}
+S3_URL_FORMAT: ${S3_URL_FORMAT}
+MAX_FILE_UPLOAD_SIZE: ${MAX_FILE_UPLOAD_SIZE}
+PRE_SIGNED_URL_EXPIRE_TIME: ${PRE_SIGNED_URL_EXPIRE_TIME}
